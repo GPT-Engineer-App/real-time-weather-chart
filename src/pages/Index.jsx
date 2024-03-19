@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Box, Heading, VStack, HStack, Text } from "@chakra-ui/react";
 
-const API_KEY = "YOUR_API_KEY_HERE";
+const API_KEY = "96505c1320ddb01282819c64b0d3b749";
 const CITIES = ["Lisbon", "Stockholm", "Luleå", "Shanghai", "Honolulu"];
 
 const Index = () => {
