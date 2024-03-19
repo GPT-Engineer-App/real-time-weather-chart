@@ -74,16 +74,16 @@ const Index = () => {
   const maxTemperature = Math.max(...Object.values(temperatures), 30);
 
   return (
-    <Box textAlign="center" py={10}>
+    <Box textAlign="center" py={20} bgGradient="linear(to-r, brand.900, brand.500)" minHeight="100vh" color="white">
       <HStack justify="flex-end" mb={4}>
         <LanguageSelector language={language} setLanguage={setLanguage} />
       </HStack>
-      <Heading as="h1" size="xl" mb={4}>
+      <Heading as="h1" size="2xl" mb={8} fontWeight="extrabold">
         {translations[language].title}
       </Heading>
       <FormControl display="flex" alignItems="center" mb={8}>
-        <Input type="text" placeholder={translations[language].placeholder} value={newCity} onChange={handleInputChange} mr={4} />
-        <Button onClick={handleSubmit} colorScheme="blue">
+        <Input type="text" placeholder={translations[language].placeholder} value={newCity} onChange={handleInputChange} mr={4} size="lg" fontWeight="bold" focusBorderColor="brand.500" />
+        <Button onClick={handleSubmit} colorScheme="brand" size="lg" fontWeight="bold" _hover={{ bg: "brand.700" }}>
           {translations[language].submit}
         </Button>
       </FormControl>
@@ -93,9 +93,9 @@ const Index = () => {
             <Text fontWeight="bold" w="100px" textAlign="right">
               {city}
             </Text>
-            <Box w={`${(temperatures[city] / maxTemperature) * 80}%`} h="30px" bg="blue.500" />
+            <Box w={`${(temperatures[city] / maxTemperature) * 80}%`} h="40px" bg="brand.500" borderRadius="md" boxShadow="md" />
             <Text w="50px">{temperatures[city]}°C</Text>
-            <IconButton icon={<FaTrash />} aria-label={`Remove ${city}`} onClick={() => handleRemoveCity(city)} size="sm" variant="ghost" colorScheme="red" />
+            <IconButton icon={<FaTrash />} aria-label={`Remove ${city}`} onClick={() => handleRemoveCity(city)} size="sm" variant="ghost" colorScheme="white" _hover={{ bg: "whiteAlpha.200" }} />
           </HStack>
         ))}
       </VStack>
