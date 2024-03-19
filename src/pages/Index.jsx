@@ -1,11 +1,23 @@
 import { useState, useEffect } from "react";
-import { Box, Heading, VStack, HStack, Text } from "@chakra-ui/react";
+import { Box, Heading, VStack, HStack, Text, Input, Button, FormControl } from "@chakra-ui/react";
 
 const API_KEY = "96505c1320ddb01282819c64b0d3b749";
 const CITIES = ["Lisbon", "Stockholm", "Luleå", "Shanghai", "Honolulu"];
 
 const Index = () => {
   const [temperatures, setTemperatures] = useState({});
+  const [newCity, setNewCity] = useState("");
+
+  const handleInputChange = (event) => {
+    setNewCity(event.target.value);
+  };
+
+  const handleSubmit = () => {
+    if (newCity.trim() !== "") {
+      CITIES.push(newCity.trim());
+      setNewCity("");
+    }
+  };
 
   useEffect(() => {
     const fetchTemperatures = async () => {
@@ -30,9 +42,15 @@ const Index = () => {
 
   return (
     <Box textAlign="center" py={10}>
-      <Heading as="h1" size="xl" mb={8}>
+      <Heading as="h1" size="xl" mb={4}>
         Real-time Weather Chart
       </Heading>
+      <FormControl display="flex" alignItems="center" mb={8}>
+        <Input type="text" placeholder="Enter a city" value={newCity} onChange={handleInputChange} mr={4} />
+        <Button onClick={handleSubmit} colorScheme="blue">
+          Submit
+        </Button>
+      </FormControl>
       <VStack spacing={4}>
         {CITIES.map((city) => (
           <HStack key={city} w="100%" spacing={4}>
