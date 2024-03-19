@@ -28,11 +28,14 @@ const translations = {
   },
 };
 
+const DEFAULT_LOCATION = "Lisbon";
+
 const Index = () => {
   const [language, setLanguage] = useState("en");
   const [temperatures, setTemperatures] = useState({});
   const [newCity, setNewCity] = useState("");
   const [unit, setUnit] = useState("celsius");
+  const [defaultTemperature, setDefaultTemperature] = useState(null);
 
   const handleInputChange = (event) => {
     setNewCity(event.target.value);
@@ -66,6 +69,7 @@ const Index = () => {
         newTemperatures[city] = data.main.temp;
       }
       setTemperatures(newTemperatures);
+      setDefaultTemperature(newTemperatures[DEFAULT_LOCATION]);
     };
 
     fetchTemperatures();
@@ -80,7 +84,12 @@ const Index = () => {
 
   return (
     <Box textAlign="center" py={20} bgGradient="linear(to-r, brand.900, brand.800)" minHeight="100vh" color="white">
-      <HStack justify="flex-end" mb={4}>
+      <HStack justify="space-between" mb={4}>
+        {defaultTemperature && (
+          <Text fontWeight="bold">
+            {DEFAULT_LOCATION}: {unit === "celsius" ? `${defaultTemperature}°C` : `${celsiusToFahrenheit(defaultTemperature).toFixed(1)}°F`}
+          </Text>
+        )}
         <LanguageSelector language={language} setLanguage={setLanguage} />
       </HStack>
       <Heading as="h1" size="2xl" mb={8} fontWeight="extrabold">
