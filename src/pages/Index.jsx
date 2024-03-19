@@ -83,7 +83,7 @@ const Index = () => {
   const maxTemperature = Math.max(...Object.values(temperatures), 30);
 
   return (
-    <Box textAlign="center" py={20} bgGradient="linear(to-r, brand.900, brand.800)" minHeight="100vh" color="white">
+    <Box textAlign="center" py={20} mx={8} bgGradient="linear(to-r, brand.900, brand.800)" minHeight="100vh" color="white">
       <HStack justify="space-between" mb={4}>
         {defaultTemperature && (
           <Text fontWeight="bold">
