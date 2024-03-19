@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
-import { Box, Heading, VStack, HStack, Text, Input, Button, FormControl } from "@chakra-ui/react";
+import { Box, Heading, VStack, HStack, Text, Input, Button, FormControl, IconButton } from "@chakra-ui/react";
+import { FaTrash } from "react-icons/fa";
 
 const API_KEY = "96505c1320ddb01282819c64b0d3b749";
 const CITIES = ["Lisbon", "Stockholm", "Luleå", "Shanghai", "Honolulu"];
@@ -12,11 +13,23 @@ const Index = () => {
     setNewCity(event.target.value);
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (newCity.trim() !== "") {
-      CITIES.push(newCity.trim());
+      const city = newCity.trim();
+      CITIES.push(city);
       setNewCity("");
+      const response = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${API_KEY}&units=metric`);
+      const data = await response.json();
+      setTemperatures({ ...temperatures, [city]: data.main.temp });
     }
+  };
+
+  const handleRemoveCity = (cityToRemove) => {
+    const updatedCities = CITIES.filter((city) => city !== cityToRemove);
+    CITIES.length = 0;
+    CITIES.push(...updatedCities);
+    const { [cityToRemove]: _, ...updatedTemperatures } = temperatures;
+    setTemperatures(updatedTemperatures);
   };
 
   useEffect(() => {
@@ -59,6 +72,7 @@ const Index = () => {
             </Text>
             <Box w={`${(temperatures[city] / maxTemperature) * 80}%`} h="30px" bg="blue.500" />
             <Text w="50px">{temperatures[city]}°C</Text>
+            <IconButton icon={<FaTrash />} aria-label={`Remove ${city}`} onClick={() => handleRemoveCity(city)} size="sm" variant="ghost" colorScheme="red" />
           </HStack>
         ))}
       </VStack>
