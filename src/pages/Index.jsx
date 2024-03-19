@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
-import { Box, Heading, VStack, HStack, Text, Input, Button, FormControl, IconButton } from "@chakra-ui/react";
+import { Box, Heading, VStack, HStack, Text, Input, Button, FormControl, IconButton, useDisclosure } from "@chakra-ui/react";
+import { motion } from "framer-motion";
 import { FaTrash } from "react-icons/fa";
 import LanguageSelector from "../components/LanguageSelector";
 
@@ -24,10 +25,17 @@ const translations = {
   },
 };
 
+const AnimatedBar = ({ value, isOpen }) => <motion.div initial={{ width: 0 }} animate={{ width: isOpen ? `${value}%` : 0 }} transition={{ duration: 1 }} style={{ height: "30px", backgroundColor: "blue.500" }} />;
+
 const Index = () => {
+  const { isOpen, onOpen } = useDisclosure();
   const [language, setLanguage] = useState("en");
   const [temperatures, setTemperatures] = useState({});
   const [newCity, setNewCity] = useState("");
+
+  useEffect(() => {
+    onOpen();
+  }, [onOpen]);
 
   const handleInputChange = (event) => {
     setNewCity(event.target.value);
@@ -93,7 +101,7 @@ const Index = () => {
             <Text fontWeight="bold" w="100px" textAlign="right">
               {city}
             </Text>
-            <Box w={`${(temperatures[city] / maxTemperature) * 80}%`} h="30px" bg="blue.500" />
+            <AnimatedBar value={(temperatures[city] / maxTemperature) * 80} isOpen={isOpen} />
             <Text w="50px">{temperatures[city]}°C</Text>
             <IconButton icon={<FaTrash />} aria-label={`Remove ${city}`} onClick={() => handleRemoveCity(city)} size="sm" variant="ghost" colorScheme="red" />
           </HStack>
