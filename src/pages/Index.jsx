@@ -70,7 +70,7 @@ const Index = () => {
             <Text fontWeight="bold" w="100px" textAlign="right">
               {city}
             </Text>
-            <Box w={`${(temperatures[city] / maxTemperature) * 80}%`} h="30px" bg="blue.500" />
+            <Box w={`${(Math.abs(temperatures[city]) / maxTemperature) * 80}%`} h="30px" bg={temperatures[city] < 0 ? "red.500" : "blue.500"} ml={temperatures[city] < 0 ? `${(1 - Math.abs(temperatures[city]) / maxTemperature) * 80}%` : 0} />
             <Text w="50px">{temperatures[city]}°C</Text>
             <IconButton icon={<FaTrash />} aria-label={`Remove ${city}`} onClick={() => handleRemoveCity(city)} size="sm" variant="ghost" colorScheme="red" />
           </HStack>
