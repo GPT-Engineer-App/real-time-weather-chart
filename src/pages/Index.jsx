@@ -3,6 +3,10 @@ import { Box, Heading, VStack, HStack, Text, Input, Button, FormControl, IconBut
 import { FaTrash } from "react-icons/fa";
 import LanguageSelector from "../components/LanguageSelector";
 
+const celsiusToFahrenheit = (celsius) => {
+  return (celsius * 9) / 5 + 32;
+};
+
 const API_KEY = "96505c1320ddb01282819c64b0d3b749";
 const CITIES = ["Lisbon", "Stockholm", "Luleå", "Shanghai", "Honolulu"];
 
@@ -28,6 +32,7 @@ const Index = () => {
   const [language, setLanguage] = useState("en");
   const [temperatures, setTemperatures] = useState({});
   const [newCity, setNewCity] = useState("");
+  const [unit, setUnit] = useState("celsius");
 
   const handleInputChange = (event) => {
     setNewCity(event.target.value);
@@ -94,11 +99,14 @@ const Index = () => {
               {city}
             </Text>
             <Box w={`${(temperatures[city] / maxTemperature) * 80}%`} h="40px" bg="brand.600" borderRadius="md" boxShadow="0 4px 6px rgba(0, 0, 0, 0.1)" />
-            <Text w="50px">{temperatures[city]}°C</Text>
+            <Text w="50px">{unit === "celsius" ? `${temperatures[city]}°C` : `${celsiusToFahrenheit(temperatures[city]).toFixed(1)}°F`}</Text>
             <IconButton icon={<FaTrash />} aria-label={`Remove ${city}`} onClick={() => handleRemoveCity(city)} size="sm" variant="ghost" colorScheme="white" _hover={{ bg: "whiteAlpha.200" }} />
           </HStack>
         ))}
       </VStack>
+      <Button onClick={() => setUnit(unit === "celsius" ? "fahrenheit" : "celsius")} mt={8} colorScheme="brand" size="lg" fontWeight="bold" _hover={{ bg: "brand.700" }} boxShadow="0 4px 6px rgba(0, 0, 0, 0.1)">
+        {unit === "celsius" ? "Switch to Fahrenheit" : "Switch to Celsius"}
+      </Button>
     </Box>
   );
 };
