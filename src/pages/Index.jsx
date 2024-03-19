@@ -1,11 +1,31 @@
 import { useState, useEffect } from "react";
 import { Box, Heading, VStack, HStack, Text, Input, Button, FormControl, IconButton } from "@chakra-ui/react";
 import { FaTrash } from "react-icons/fa";
+import LanguageSelector from "../components/LanguageSelector";
 
 const API_KEY = "96505c1320ddb01282819c64b0d3b749";
 const CITIES = ["Lisbon", "Stockholm", "Luleå", "Shanghai", "Honolulu"];
 
+const translations = {
+  en: {
+    title: "Real-time Weather Chart",
+    placeholder: "Enter a city",
+    submit: "Submit",
+  },
+  sv: {
+    title: "Realtidsväderdiagram",
+    placeholder: "Ange en stad",
+    submit: "Skicka",
+  },
+  pt: {
+    title: "Gráfico de Clima em Tempo Real",
+    placeholder: "Insira uma cidade",
+    submit: "Enviar",
+  },
+};
+
 const Index = () => {
+  const [language, setLanguage] = useState("en");
   const [temperatures, setTemperatures] = useState({});
   const [newCity, setNewCity] = useState("");
 
@@ -55,13 +75,16 @@ const Index = () => {
 
   return (
     <Box textAlign="center" py={10}>
+      <HStack justify="flex-end" mb={4}>
+        <LanguageSelector language={language} setLanguage={setLanguage} />
+      </HStack>
       <Heading as="h1" size="xl" mb={4}>
-        Real-time Weather Chart
+        {translations[language].title}
       </Heading>
       <FormControl display="flex" alignItems="center" mb={8}>
-        <Input type="text" placeholder="Enter a city" value={newCity} onChange={handleInputChange} mr={4} />
+        <Input type="text" placeholder={translations[language].placeholder} value={newCity} onChange={handleInputChange} mr={4} />
         <Button onClick={handleSubmit} colorScheme="blue">
-          Submit
+          {translations[language].submit}
         </Button>
       </FormControl>
       <VStack spacing={4}>
