@@ -34,23 +34,15 @@ const Index = () => {
         Real-time Weather Chart
       </Heading>
       <VStack spacing={4}>
-        <HStack spacing={8}>
-          <VStack spacing={4} align="flex-end">
-            {CITIES.map((city) => (
-              <Text key={city} fontWeight="bold">
-                {city}
-              </Text>
-            ))}
-          </VStack>
-          <VStack spacing={4} w="100%">
-            {CITIES.map((city) => (
-              <HStack key={city} w="100%" spacing={4}>
-                <Box w={`${(temperatures[city] / maxTemperature) * 80}%`} h="30px" bg="blue.500" />
-                <Text w="50px">{temperatures[city]}°C</Text>
-              </HStack>
-            ))}
-          </VStack>
-        </HStack>
+        {CITIES.map((city) => (
+          <HStack key={city} w="100%" spacing={4}>
+            <Text fontWeight="bold" w="100px" textAlign="right">
+              {city}
+            </Text>
+            <Box w={`${(temperatures[city] / maxTemperature) * 80}%`} h="30px" bg="blue.500" />
+            <Text w="50px">{temperatures[city]}°C</Text>
+          </HStack>
+        ))}
       </VStack>
     </Box>
   );
