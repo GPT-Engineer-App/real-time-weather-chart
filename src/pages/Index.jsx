@@ -74,7 +74,7 @@ const Index = () => {
   const maxTemperature = Math.max(...Object.values(temperatures), 30);
 
   return (
-    <Box textAlign="center" py={20} bgGradient="linear(to-r, brand.900, brand.500)" minHeight="100vh" color="white">
+    <Box textAlign="center" py={20} bgGradient="linear(to-r, brand.900, brand.800)" minHeight="100vh" color="white">
       <HStack justify="flex-end" mb={4}>
         <LanguageSelector language={language} setLanguage={setLanguage} />
       </HStack>
@@ -83,7 +83,7 @@ const Index = () => {
       </Heading>
       <FormControl display="flex" alignItems="center" mb={8}>
         <Input type="text" placeholder={translations[language].placeholder} value={newCity} onChange={handleInputChange} mr={4} size="lg" fontWeight="bold" focusBorderColor="brand.500" />
-        <Button onClick={handleSubmit} colorScheme="brand" size="lg" fontWeight="bold" _hover={{ bg: "brand.700" }}>
+        <Button onClick={handleSubmit} colorScheme="brand" size="lg" fontWeight="bold" _hover={{ bg: "brand.700" }} boxShadow="0 4px 6px rgba(0, 0, 0, 0.1)">
           {translations[language].submit}
         </Button>
       </FormControl>
@@ -93,7 +93,7 @@ const Index = () => {
             <Text fontWeight="bold" w="100px" textAlign="right">
               {city}
             </Text>
-            <Box w={`${(temperatures[city] / maxTemperature) * 80}%`} h="40px" bg="brand.500" borderRadius="md" boxShadow="md" />
+            <Box w={`${(temperatures[city] / maxTemperature) * 80}%`} h="40px" bg="brand.600" borderRadius="md" boxShadow="0 4px 6px rgba(0, 0, 0, 0.1)" />
             <Text w="50px">{temperatures[city]}°C</Text>
             <IconButton icon={<FaTrash />} aria-label={`Remove ${city}`} onClick={() => handleRemoveCity(city)} size="sm" variant="ghost" colorScheme="white" _hover={{ bg: "whiteAlpha.200" }} />
           </HStack>
