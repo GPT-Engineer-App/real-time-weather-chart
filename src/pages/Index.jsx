@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Box, Heading, VStack, HStack, Text, Input, Button, FormControl, IconButton } from "@chakra-ui/react";
+import { Box, Heading, VStack, HStack, Text, Input, Button, FormControl, IconButton, Flex } from "@chakra-ui/react";
 import { FaTrash } from "react-icons/fa";
 import LanguageSelector from "../components/LanguageSelector";
 
@@ -28,6 +28,7 @@ const Index = () => {
   const [language, setLanguage] = useState("en");
   const [temperatures, setTemperatures] = useState({});
   const [newCity, setNewCity] = useState("");
+  const [unit, setUnit] = useState("celsius");
 
   const handleInputChange = (event) => {
     setNewCity(event.target.value);
@@ -56,9 +57,9 @@ const Index = () => {
     const fetchTemperatures = async () => {
       const newTemperatures = {};
       for (const city of CITIES) {
-        const response = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${API_KEY}&units=metric`);
+        const response = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${API_KEY}&units=${unit === "celsius" ? "metric" : "imperial"}`);
         const data = await response.json();
-        newTemperatures[city] = data.main.temp;
+        newTemperatures[city] = Math.round(data.main.temp);
       }
       setTemperatures(newTemperatures);
     };
@@ -69,7 +70,10 @@ const Index = () => {
     return () => {
       clearInterval(intervalId);
     };
-  }, []);
+    const toggleUnit = () => {
+      setUnit(unit === "celsius" ? "fahrenheit" : "celsius");
+    };
+  }, [unit]);
 
   const maxTemperature = Math.max(...Object.values(temperatures), 30);
 
@@ -81,7 +85,7 @@ const Index = () => {
       <Heading as="h1" size="2xl" mb={8} fontWeight="extrabold">
         {translations[language].title}
       </Heading>
-      <FormControl display="flex" alignItems="center" mb={8}>
+      <FormControl display="flex" alignItems="center">
         <Input type="text" placeholder={translations[language].placeholder} value={newCity} onChange={handleInputChange} mr={4} size="lg" fontWeight="bold" focusBorderColor="brand.500" />
         <Button onClick={handleSubmit} colorScheme="brand" size="lg" fontWeight="bold" _hover={{ bg: "brand.700" }} boxShadow="0 4px 6px rgba(0, 0, 0, 0.1)">
           {translations[language].submit}
@@ -94,11 +98,19 @@ const Index = () => {
               {city}
             </Text>
             <Box w={`${(temperatures[city] / maxTemperature) * 80}%`} h="40px" bg="brand.600" borderRadius="md" boxShadow="0 4px 6px rgba(0, 0, 0, 0.1)" />
-            <Text w="50px">{temperatures[city]}°C</Text>
+            <Text w="50px" fontSize="xl">
+              {temperatures[city]}
+              {unit === "celsius" ? "°C" : "°F"}
+            </Text>
             <IconButton icon={<FaTrash />} aria-label={`Remove ${city}`} onClick={() => handleRemoveCity(city)} size="sm" variant="ghost" colorScheme="white" _hover={{ bg: "whiteAlpha.200" }} />
           </HStack>
         ))}
       </VStack>
+      <Flex justify="center" mt={8}>
+        <Button onClick={toggleUnit} colorScheme="brand" size="lg" fontWeight="bold" _hover={{ bg: "brand.700" }} boxShadow="0 4px 6px rgba(0, 0, 0, 0.1)">
+          {unit === "celsius" ? "Switch to Fahrenheit" : "Switch to Celsius"}
+        </Button>
+      </Flex>
     </Box>
   );
 };
